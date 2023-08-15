@@ -48,3 +48,4 @@ dist/**
 package.nls.*.json
 l10n/
 venv/
+venv/**
