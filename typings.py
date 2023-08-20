@@ -4,12 +4,12 @@ class Triple:
     def __init__(self, subject, relation, obj):
         self.subject = subject
         self.relation = relation
-        self.obj = obj
+        self.object = obj
 
 class TripleEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Triple):
-            return {'subject': obj.subject, 'relation': obj.relation, 'object': obj.obj}
+            return {'subject': obj.subject, 'relation': obj.relation, 'object': obj.object}
         return super().default(obj)
     
 

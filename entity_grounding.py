@@ -49,7 +49,7 @@ def get_grounded_triples(entities: List[str]) -> List[Triple]:
         if os.path.exists(image_dir):
             files = os.listdir(image_dir)
             if len(files) > 0:
-                grounded_triple = Triple(entity, 'hasImage', files[0])
+                grounded_triple = Triple(entity, 'hasImage', image_dir+ '/'+ files[0])
                 grounded_triples.append(grounded_triple)
     return grounded_triples
 

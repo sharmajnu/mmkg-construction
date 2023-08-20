@@ -21,5 +21,5 @@ def extract_entities(triples: List[Triple]) -> List[str]:
     entities = set()
     for triple in triples:
         entities.add(triple.subject)
-        entities.add(triple.obj)
+        entities.add(triple.object)
     return list(entities)
