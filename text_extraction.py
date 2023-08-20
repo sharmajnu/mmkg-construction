@@ -1,29 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-import json
-
-class Article:
-    def __init__(self, textContent, images):
-        self.textContent = textContent
-        self.images = images
-
-class Image:
-    def __init__(self, imageUrl, caption):
-        self.imageUrl = imageUrl
-        self.caption = caption
-
-class ArticleEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Article):
-            return {
-                'textContent': obj.textContent,
-                'images': [
-                    {'imageUrl': image.imageUrl, 'caption': image.caption}
-                    for image in obj.images
-                ]
-            }
-        return super().default(obj)
-
+from typings import Article, Image
 
 
 def scrape_article(url):
