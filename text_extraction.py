@@ -17,6 +17,7 @@ def scrape_article(url):
         text_content = text_content + str(para.get_text()) + "\n"
     
 
+    # Extract the images with captions (modify these selectors based on the website structure)
     imageTag = soup.findAll("div", {"class": "artSplitter mol-img-group"})
     images_with_captions = []
     for paragraphs in imageTag:
