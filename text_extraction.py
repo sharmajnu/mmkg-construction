@@ -1,3 +1,5 @@
+import os
+from typing import List
 import requests
 from bs4 import BeautifulSoup
 from typings import Article, Image
@@ -37,3 +39,13 @@ def scrape_article(url):
         images_with_captions.append(Image(image_url, image_caption))
     
     return Article(text_content, images_with_captions)
+
+def save_images_on_local_folder(images: List[Image]):
+    for image in images:
+        response = requests.get(image.imageUrl)
+        response.raise_for_status() # Raise an error for bad response
+        
+        image_name = os.path.basename(image.imageUrl)
+
+        with open('article/images/' + image_name, 'wb') as f:
+            f.write(response.content)
