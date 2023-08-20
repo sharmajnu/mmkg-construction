@@ -1,7 +1,7 @@
 from networkx import bull_graph
 from entity_grounding import get_grounded_triples, get_images
 from mmkg_construction import add_triples_to_graph, build_graph
-from text_extraction import scrape_article
+from text_extraction import save_images_on_local_folder, scrape_article
 from extract_triples import extract_entities, get_openie_triples
 import json
 
@@ -12,6 +12,9 @@ output = scrape_article('http://www.dailymail.co.uk/news/article-3197220/CHRISTO
 
 with open('output_step1_text_extraction.json', 'w') as f:
     json.dump(output, f, cls=ArticleEncoder)
+
+save_images_on_local_folder(output.images)
+
 
 # Extract triples from the text content
 triples = get_openie_triples(output.textContent)
