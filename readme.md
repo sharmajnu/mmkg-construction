@@ -1,7 +1,16 @@
 # MMKG Construction
 ## _IIITD_
 
-## Tripple extraction using OpenIE
+## Text extraction
+
+In this project we are using the ION Corpus dataset. It is composed of news articles from 5 different online
+news portals like The New York Times and The Daily Mail. For a particular article, we are
+extracting the article text along with the image-caption pairs from the URLs listed in the dataset
+using the Python-based HTML parsing library, BeautifulSoup. The article text serves as the
+input for the base knowledge graph, the image is used for scene graph generation, while the
+captions are expected to serve as the link between the two separate graphs thus obtained.
+
+## Triple extraction using OpenIE
 
 OpenIE (Open Information Extraction) is a technique that automatically extracts structured information from unstructured text in the form of triples: (Subject, Relation, Object). The Stanford NLP group offers a popular implementation of OpenIE.
 
@@ -18,4 +27,4 @@ java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -t
 ```
 
 ### 3. Client code to extract triples
-Client code can be found in extract_tripples.py
+Client code can be found in extract_triples.py
