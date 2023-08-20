@@ -50,3 +50,4 @@ l10n/
 venv/
 venv/**
 content/images/**
+article/images/**
