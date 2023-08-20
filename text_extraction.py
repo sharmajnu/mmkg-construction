@@ -1,5 +1,30 @@
 import requests
 from bs4 import BeautifulSoup
+import json
+
+class Article:
+    def __init__(self, textContent, images):
+        self.textContent = textContent
+        self.images = images
+
+class Image:
+    def __init__(self, imageUrl, caption):
+        self.imageUrl = imageUrl
+        self.caption = caption
+
+class ArticleEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Article):
+            return {
+                'textContent': obj.textContent,
+                'images': [
+                    {'imageUrl': image.imageUrl, 'caption': image.caption}
+                    for image in obj.images
+                ]
+            }
+        return super().default(obj)
+
+
 
 def scrape_article(url):
     # Fetch the content of the article
@@ -16,6 +41,8 @@ def scrape_article(url):
     for para in inputTag:
         text_content = text_content + str(para.get_text()) + "\n"
     
+    # remove invalid json characters
+    text_content.replace(r'\x0a', '\n')
 
     # Extract the images with captions (modify these selectors based on the website structure)
     imageTag = soup.findAll("div", {"class": "artSplitter mol-img-group"})
@@ -30,6 +57,6 @@ def scrape_article(url):
         print(image_url)
         print(image_caption)
 
-        images_with_captions.append((image_url, image_caption))
+        images_with_captions.append(Image(image_url, image_caption))
     
-    return text_content, images_with_captions
+    return Article(text_content, images_with_captions)
