@@ -1,6 +1,7 @@
 import os
-from networkx import bull_graph
 from entity_grounding import get_grounded_triples, get_images
+from graph_visualization import visualize_knowledge_graph
+from graph_visualization_with_images import visualize_knowledge_graph_with_images
 from image_caption import get_image_captions
 from mmkg_construction import add_triples_to_graph, build_graph
 from text_extraction import save_images_on_local_folder, scrape_article
@@ -59,6 +60,10 @@ for image in article.images:
   add_triples_to_graph(graph, triples)
 
 
+visualize_knowledge_graph_with_images(graph)
+
+
+print("Graph visualization is done")
 
 
 
