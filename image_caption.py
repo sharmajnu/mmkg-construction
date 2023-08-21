@@ -1,42 +1,50 @@
+import os
+from typing import List
 from transformers import VisionEncoderDecoderModel, ViTFeatureExtractor, AutoTokenizer
 import torch
 from PIL import Image
 
 # using the pretrained model https://huggingface.co/nlpconnect/vit-gpt2-image-captioning
 
+def get_image_captions(image_paths: List[str]):
 
-model = VisionEncoderDecoderModel.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
-feature_extractor = ViTFeatureExtractor.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
-tokenizer = AutoTokenizer.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
+    model = VisionEncoderDecoderModel.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
+    feature_extractor = ViTFeatureExtractor.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
+    tokenizer = AutoTokenizer.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model.to(device)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.to(device)
 
 
 
-max_length = 1000
-num_beams = 4
-gen_kwargs = {"max_length": max_length, "num_beams": num_beams}
-def predict_step(image_paths):
-  images = []
-  for image_path in image_paths:
-    i_image = Image.open(image_path)
-    if i_image.mode != "RGB":
-      i_image = i_image.convert(mode="RGB")
+    max_length = 16
+    num_beams = 4
+    gen_kwargs = {"max_length": max_length, "num_beams": num_beams}
 
-    images.append(i_image)
+    images = []
+    for image_path in image_paths:
+        i_image = Image.open(image_path)
+        if i_image.mode != "RGB":
+            i_image = i_image.convert(mode="RGB")
 
-  pixel_values = feature_extractor(images=images, return_tensors="pt").pixel_values
-  pixel_values = pixel_values.to(device)
+        images.append(i_image)
 
-  output_ids = model.generate(pixel_values, **gen_kwargs)
+    pixel_values = feature_extractor(images=images, return_tensors="pt").pixel_values
+    pixel_values = pixel_values.to(device)
 
-  preds = tokenizer.batch_decode(output_ids, skip_special_tokens=True)
-  preds = [pred.strip() for pred in preds]
-  return preds
+    output_ids = model.generate(pixel_values, **gen_kwargs)
+
+    preds = tokenizer.batch_decode(output_ids, skip_special_tokens=True)
+    captions = [pred.strip() for pred in preds]
+    return captions
   
-predict_step(['"https://i.dailymail.co.uk/i/pix/2015/08/13/23/220BCCFB00000578-0-image-a-30_1439506449267.jpg']) # ['a woman in a hospital bed with a woman in a hospital bed']
 
-# image_path = "article/images/220BCCFB00000578-0-image-a-30_1439506449267.jpg"
-# print(generate_caption(image_path))
+images = []
+for image in os.listdir('article/images'):
+  path = 'article/images/' + image
+  if os.path.isfile(path):
+     images.append(path)
 
+captions = get_image_captions(images)
+
+print(captions)
