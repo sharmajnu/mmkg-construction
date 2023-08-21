@@ -1,8 +1,11 @@
 {
     "cSpell.words": [
         "argmax",
+        "figsize",
         "imagenet",
         "keras",
+        "matplotlib",
+        "networkx",
         "torchvision",
         "unsqueeze"
     ]
