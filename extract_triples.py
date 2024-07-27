@@ -23,3 +23,4 @@ def extract_entities(triples: List[Triple]) -> List[str]:
         entities.add(triple.subject)
         entities.add(triple.object)
     return list(entities)
+
